@@ -1,5 +1,4 @@
 #include "file_list.hpp"
-#include <filesystem>
 #include <QDragEnterEvent>
 #include <QMimeData>
 #include <QDir>
@@ -8,6 +7,14 @@
 FileList::FileList() {
     setAcceptDrops(true);
     setModel(&m_model);
+    setSelectionMode(QAbstractItemView::ExtendedSelection);
+    QObject::connect(selectionModel(), &QItemSelectionModel::selectionChanged, [&]() {
+        QStringList list;
+        for (QModelIndex &idx : selectedIndexes()) {
+            list.append(m_model.at(idx.row()));
+        }
+        emit selection_changed(list);
+    });
 }
 
 void FileList::dragEnterEvent(QDragEnterEvent *e) {
@@ -27,15 +34,12 @@ void FileList::dropEvent(QDropEvent *e) {
     for (QUrl &url : e->mimeData()->urls()) {
         QString file = url.toLocalFile();
         if (QDir(file).exists()) {
-            QDirIterator dirit(QDir(file).path(), QStringList() << "*.mp3", QDir::Files, QDirIterator::Subdirectories);
+            QDirIterator dirit(QDir(file).path(), QStringList() << "*.mp3", QDir::Files,
+                               QDirIterator::Subdirectories);
             while (dirit.hasNext()) {
                 files.append(dirit.next());
             }
         }
     }
     m_model.set_items(files);
-}
-
-bool FileList::is_file_supported(QString file) {
-    return file.endsWith("*.mp3");
 }
