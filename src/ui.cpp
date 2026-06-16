@@ -23,6 +23,8 @@ UI::UI(int& argc, char**& argv): m_app(argc, argv) {
     tag_box->addWidget(&m_edit_album);
     tag_box->addWidget(new QLabel("Date:"));
     tag_box->addWidget(&m_edit_year);
+    tag_box->addWidget(new QLabel("Artwork"));
+    tag_box->addWidget(&m_artwork);
 
     QHBoxLayout *second_box = new QHBoxLayout();
     second_box->addWidget(&m_file_list);
@@ -83,6 +85,11 @@ void UI::set_different_years() {
     m_edit_year.setText("");
 }
 
+void UI::set_different_artwork() {
+    m_artwork.clear();
+    m_artwork.setText("Artwork varies");
+}
+
 QString UI::get_title() {
     return m_edit_title.text();
 }
@@ -97,6 +104,10 @@ QString UI::get_album() {
 
 uint UI::get_year() {
     return m_edit_year.text().toUInt();
+}
+
+void UI::set_artwork(QByteArray data) {
+    m_artwork.set_artwork(data);
 }
 
 QStringList UI::selected_files() {

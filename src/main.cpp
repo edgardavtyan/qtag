@@ -3,6 +3,17 @@
 #include "ui.hpp"
 #include "taglib/taglib.h"
 #include "taglib/fileref.h"
+#include "taglib/mpegfile.h"
+#include "taglib/id3v2tag.h"
+#include "taglib/attachedpictureframe.h"
+
+QByteArray read_artwork(QString file) {
+    TagLib::MPEG::File mp3file(file.toStdString().c_str());
+    TagLib::ID3v2::Frame *frame = mp3file.ID3v2Tag()->frameListMap()["APIC"].front();
+    TagLib::ByteVector pic = static_cast<TagLib::ID3v2::AttachedPictureFrame*>(frame)->picture();
+    QByteArray data(pic.data(), pic.size());
+    return data;
+}
 
 int main(int argc, char** argv) {
     UI ui(argc, argv);
@@ -10,6 +21,7 @@ int main(int argc, char** argv) {
     bool is_different_artists = false;
     bool is_different_albums = false;
     bool is_different_years = false;
+    bool is_different_artwork = false;
 
     QObject::connect(&ui, &UI::selection_changed, [&](QStringList list) {
         TagLib::FileRef first_file(list[0].toStdString().c_str());
@@ -18,10 +30,13 @@ int main(int argc, char** argv) {
         QString first_artist = first_tag->artist().toCString();
         QString first_album = first_tag->album().toCString();
         uint first_year = first_tag->year();
+        QByteArray first_artwork = read_artwork(list[0]);
         ui.set_title(first_title);
         ui.set_artist(first_artist);
         ui.set_album(first_album);
         ui.set_year(first_year);
+        ui.set_artwork(first_artwork);
+
         for (QString &str : list) {
             TagLib::FileRef file(str.toStdString().c_str());
             TagLib::Tag *tag = file.tag();
@@ -40,6 +55,12 @@ int main(int argc, char** argv) {
             if (tag->year() != first_year) {
                 ui.set_different_years();
                 is_different_years = true;
+            }
+
+            QByteArray artwork = read_artwork(str);
+            if (artwork != first_artwork) {
+                ui.set_different_artwork();
+                is_different_artwork = true;
             }
         }
     });

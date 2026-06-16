@@ -20,6 +20,7 @@ qt_add_executable(
     src/ui.cpp
     src/file_model.cpp
     src/file_list.cpp
+    src/artwork_view.cpp
 )
 
 target_link_libraries(qtag PRIVATE Qt6::Core Qt6::Widgets tag)

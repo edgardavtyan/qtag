@@ -5,6 +5,7 @@
 #include <QListView>
 #include <QLineEdit>
 #include "file_list.hpp"
+#include "artwork_view.hpp"
 
 class UI : public QObject {
     Q_OBJECT
@@ -19,10 +20,12 @@ public:
     void set_different_artists();
     void set_different_albums();
     void set_different_years();
+    void set_different_artwork();
     QString get_title();
     QString get_artist();
     QString get_album();
     uint get_year();
+    void set_artwork(QByteArray data);
     QStringList selected_files();
 signals:
     void selection_changed(QStringList list);
@@ -35,4 +38,5 @@ private:
     QLineEdit m_edit_artist;
     QLineEdit m_edit_album;
     QLineEdit m_edit_year;
+    ArtworkView m_artwork;
 };
