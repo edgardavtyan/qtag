@@ -14,15 +14,15 @@ public:
     void set_title(QString title);
     void set_artist(QString artist);
     void set_album(QString album);
-    void set_date(QString date);
+    void set_year(QString year);
     void set_different_titles();
     void set_different_artists();
     void set_different_albums();
-    void set_different_dates();
+    void set_different_years();
     QString get_title();
     QString get_artist();
     QString get_album();
-    uint get_date();
+    uint get_year();
     QStringList selected_files();
 signals:
     void selection_changed(QStringList list);
@@ -34,5 +34,5 @@ private:
     QLineEdit m_edit_title;
     QLineEdit m_edit_artist;
     QLineEdit m_edit_album;
-    QLineEdit m_edit_date;
+    QLineEdit m_edit_year;
 };

@@ -22,7 +22,7 @@ UI::UI(int& argc, char**& argv): m_app(argc, argv) {
     tag_box->addWidget(new QLabel("Album:"));
     tag_box->addWidget(&m_edit_album);
     tag_box->addWidget(new QLabel("Date:"));
-    tag_box->addWidget(&m_edit_date);
+    tag_box->addWidget(&m_edit_year);
 
     QHBoxLayout *second_box = new QHBoxLayout();
     second_box->addWidget(&m_file_list);
@@ -58,9 +58,9 @@ void UI::set_album(QString album) {
     m_edit_album.setText(album);
 }
 
-void UI::set_date(QString date) {
-    m_edit_date.setPlaceholderText("");
-    m_edit_date.setText(date);
+void UI::set_year(QString date) {
+    m_edit_year.setPlaceholderText("");
+    m_edit_year.setText(date);
 }
 
 void UI::set_different_titles() {
@@ -78,9 +78,9 @@ void UI::set_different_albums() {
     m_edit_album.setText("");
 }
 
-void UI::set_different_dates() {
-    m_edit_date.setPlaceholderText("Different values");
-    m_edit_date.setText("");
+void UI::set_different_years() {
+    m_edit_year.setPlaceholderText("Different values");
+    m_edit_year.setText("");
 }
 
 QString UI::get_title() {
@@ -95,8 +95,8 @@ QString UI::get_album() {
     return m_edit_album.text();
 }
 
-uint UI::get_date() {
-    return m_edit_date.text().toUInt();
+uint UI::get_year() {
+    return m_edit_year.text().toUInt();
 }
 
 QStringList UI::selected_files() {
