@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
         ui.set_title(first_title);
         ui.set_artist(first_artist);
         ui.set_album(first_album);
-        ui.set_year(QString::fromStdString(std::to_string(first_year)));
+        ui.set_year(first_year);
         for (QString &str : list) {
             TagLib::FileRef file(str.toStdString().c_str());
             TagLib::Tag *tag = file.tag();

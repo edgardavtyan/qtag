@@ -14,7 +14,7 @@ public:
     void set_title(QString title);
     void set_artist(QString artist);
     void set_album(QString album);
-    void set_year(QString year);
+    void set_year(uint year);
     void set_different_titles();
     void set_different_artists();
     void set_different_albums();

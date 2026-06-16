@@ -58,9 +58,9 @@ void UI::set_album(QString album) {
     m_edit_album.setText(album);
 }
 
-void UI::set_year(QString date) {
+void UI::set_year(uint date) {
     m_edit_year.setPlaceholderText("");
-    m_edit_year.setText(date);
+    m_edit_year.setText(QString::number(date));
 }
 
 void UI::set_different_titles() {
