@@ -6,6 +6,11 @@
 
 int main(int argc, char** argv) {
     UI ui(argc, argv);
+    bool is_different_titles = false;
+    bool is_different_artists = false;
+    bool is_different_albums = false;
+    bool is_different_dates = false;
+
     QObject::connect(&ui, &UI::selection_changed, [&](QStringList list) {
         TagLib::FileRef first_file(list[0].toStdString().c_str());
         TagLib::Tag *first_tag = first_file.tag();
@@ -22,16 +27,39 @@ int main(int argc, char** argv) {
             TagLib::Tag *tag = file.tag();
             if (QString(tag->title().toCString()) != first_title) {
                 ui.set_different_titles();
+                is_different_titles = true;
             }
             if (QString(tag->artist().toCString()) != first_artist) {
                 ui.set_different_artists();
+                is_different_artists = true;
             }
             if (QString(tag->album().toCString()) != first_album) {
                 ui.set_different_albums();
+                is_different_albums = true;
             }
             if (tag->year() != first_date) {
                 ui.set_different_dates();
+                is_different_dates = true;
             }
+        }
+    });
+
+    QObject::connect(&ui, &UI::btn_save_clicked, [&]() {
+        for (QString &filename : ui.selected_files()) {
+            TagLib::FileRef tagfile(filename.toStdString().c_str());
+            if (not is_different_titles) {
+                tagfile.tag()->setTitle(ui.get_title().toStdString().c_str());
+            }
+            if (not is_different_artists) {
+                tagfile.tag()->setArtist(ui.get_artist().toStdString().c_str());
+            }
+            if (not is_different_albums) {
+                tagfile.tag()->setAlbum(ui.get_album().toStdString().c_str());
+            }
+            if (not is_different_dates) {
+                tagfile.tag()->setYear(ui.get_date());
+            }
+            tagfile.save();
         }
     });
     ui.exec();

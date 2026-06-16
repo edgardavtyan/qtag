@@ -7,6 +7,11 @@
 
 UI::UI(int& argc, char**& argv): m_app(argc, argv) {
     QHBoxLayout *toolbar_box = new QHBoxLayout();
+    toolbar_box->setAlignment(Qt::AlignLeft);
+    QPushButton *btn_save = new QPushButton(QIcon(":/icons/save.png"), "");
+    btn_save->setFixedSize(30, 30);
+    connect(btn_save, &QPushButton::clicked, this, &UI::btn_save_clicked);
+    toolbar_box->addWidget(btn_save);
 
     QVBoxLayout *tag_box = new QVBoxLayout();
     tag_box->setAlignment(Qt::AlignTop);
@@ -76,4 +81,24 @@ void UI::set_different_albums() {
 void UI::set_different_dates() {
     m_edit_date.setPlaceholderText("Different values");
     m_edit_date.setText("");
+}
+
+QString UI::get_title() {
+    return m_edit_title.text();
+}
+
+QString UI::get_artist() {
+    return m_edit_artist.text();
+}
+
+QString UI::get_album() {
+    return m_edit_album.text();
+}
+
+uint UI::get_date() {
+    return m_edit_date.text().toUInt();
+}
+
+QStringList UI::selected_files() {
+    return m_file_list.selected_items();
 }

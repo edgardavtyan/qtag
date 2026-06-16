@@ -19,8 +19,14 @@ public:
     void set_different_artists();
     void set_different_albums();
     void set_different_dates();
+    QString get_title();
+    QString get_artist();
+    QString get_album();
+    uint get_date();
+    QStringList selected_files();
 signals:
     void selection_changed(QStringList list);
+    void btn_save_clicked();
 private:
     QApplication m_app;
     QWidget m_root;

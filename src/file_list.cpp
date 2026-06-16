@@ -43,3 +43,11 @@ void FileList::dropEvent(QDropEvent *e) {
     }
     m_model.set_items(files);
 }
+
+QStringList FileList::selected_items() {
+    QStringList list;
+    for (QModelIndex &idx : selectedIndexes()) {
+        list.append(m_model.at(idx.row()));
+    }
+    return list;
+}

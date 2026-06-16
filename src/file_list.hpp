@@ -10,6 +10,7 @@ public:
     void dragEnterEvent(QDragEnterEvent *e) override;
     void dragMoveEvent(QDragMoveEvent *e) override;
     void dropEvent(QDropEvent *e) override;
+    QStringList selected_items();
 signals:
     void selection_changed(QStringList list);
 private:
