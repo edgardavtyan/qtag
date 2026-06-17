@@ -8,13 +8,13 @@
 UI::UI(int& argc, char**& argv): m_app(argc, argv) {
     QHBoxLayout *toolbar_box = new QHBoxLayout();
     toolbar_box->setAlignment(Qt::AlignLeft);
-    QPushButton *btn_save = new QPushButton(QIcon(":/icons/save.png"), "");
-    btn_save->setFixedSize(30, 30);
+    QPushButton *btn_save = new QPushButton("Save");
     connect(btn_save, &QPushButton::clicked, this, &UI::btn_save_clicked);
     toolbar_box->addWidget(btn_save);
 
     QVBoxLayout *tag_box = new QVBoxLayout();
     tag_box->setAlignment(Qt::AlignTop);
+    tag_box->addLayout(toolbar_box);
     tag_box->addWidget(new QLabel("Title:"));
     tag_box->addWidget(&m_edit_title);
     tag_box->addWidget(new QLabel("Artist:"));
@@ -26,13 +26,9 @@ UI::UI(int& argc, char**& argv): m_app(argc, argv) {
     tag_box->addWidget(new QLabel("Artwork"));
     tag_box->addWidget(&m_artwork);
 
-    QHBoxLayout *second_box = new QHBoxLayout();
-    second_box->addWidget(&m_file_list);
-    second_box->addLayout(tag_box);
-
-    QVBoxLayout *main_box = new QVBoxLayout(&m_root);
-    main_box->addLayout(toolbar_box);
-    main_box->addLayout(second_box);
+    QHBoxLayout *main_box = new QHBoxLayout(&m_root);
+    main_box->addWidget(&m_file_list);
+    main_box->addLayout(tag_box);
 
     connect(&m_file_list, &FileList::selection_changed, [&](QStringList list) {
         emit selection_changed(list);
