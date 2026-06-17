@@ -26,6 +26,7 @@ public:
     QString get_album();
     uint get_year();
     void set_artwork(QByteArray data);
+    QByteArray get_artwork();
     QStringList selected_files();
 signals:
     void selection_changed(QStringList list);

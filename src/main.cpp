@@ -81,6 +81,18 @@ int main(int argc, char** argv) {
                 tagfile.tag()->setYear(ui.get_year());
             }
             tagfile.save();
+
+            if (not is_different_artwork) {
+                TagLib::MPEG::File mp3file(filename.toStdString().c_str());
+                TagLib::ID3v2::Tag *mp3tag = mp3file.ID3v2Tag();
+                mp3tag->removeFrame(mp3tag->frameList("APIC")[0], true);
+                auto *artwork = new TagLib::ID3v2::AttachedPictureFrame();
+                artwork->setType(TagLib::ID3v2::AttachedPictureFrame::FrontCover);
+                artwork->setMimeType("image/jpeg");
+                artwork->setPicture(TagLib::ByteVector(ui.get_artwork().data(), ui.get_artwork().size()));
+                mp3tag->addFrame(artwork);
+                mp3file.save();
+            }
         }
     });
     ui.exec();

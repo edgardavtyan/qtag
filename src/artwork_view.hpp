@@ -9,4 +9,7 @@ public:
     void dragMoveEvent(QDragMoveEvent *e) override;
     void dropEvent(QDropEvent *e) override;
     void set_artwork(QByteArray data);
+    QByteArray get_artwork();
+private:
+    QByteArray m_artwork_data;
 };

@@ -110,6 +110,10 @@ void UI::set_artwork(QByteArray data) {
     m_artwork.set_artwork(data);
 }
 
+QByteArray UI::get_artwork() {
+    return m_artwork.get_artwork();
+}
+
 QStringList UI::selected_files() {
     return m_file_list.selected_items();
 }
