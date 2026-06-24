@@ -32,13 +32,18 @@ void FileList::dragMoveEvent(QDragMoveEvent *e) {
 void FileList::dropEvent(QDropEvent *e) {
     QList<QString> files;
     for (QUrl &url : e->mimeData()->urls()) {
-        QString file = url.toLocalFile();
-        if (QDir(file).exists()) {
-            QDirIterator dirit(QDir(file).path(), QStringList() << "*.mp3", QDir::Files,
+        QString filename = url.toLocalFile();
+        QFileInfo file(filename);
+        if (file.isDir() and file.exists()) {
+            QDirIterator dirit(QDir(filename).path(), QStringList() << "*.mp3", QDir::Files,
                                QDirIterator::Subdirectories);
             while (dirit.hasNext()) {
                 files.append(dirit.next());
             }
+        }
+
+        if (file.isFile() and file.exists() and file.completeSuffix() == "mp3") {
+            files.append(filename);
         }
     }
     m_model.set_items(files);
