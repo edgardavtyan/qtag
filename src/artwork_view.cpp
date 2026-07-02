@@ -31,6 +31,8 @@ void ArtworkView::dropEvent(QDropEvent *e) {
 
     QPixmap pixmap(file);
     setPixmap(pixmap);
+    m_artwork_width = pixmap.width();
+    m_artwork_height = pixmap.height();
     QBuffer buffer(&m_artwork_data);
     buffer.open(QIODevice::WriteOnly);
     pixmap.save(&buffer, "JPEG", 90);
@@ -41,6 +43,8 @@ void ArtworkView::set_artwork(QByteArray data) {
     QPixmap pixmap;
     pixmap.loadFromData(data);
     setPixmap(pixmap);
+    m_artwork_width = pixmap.width();
+    m_artwork_height = pixmap.height();
     QBuffer buffer(&m_artwork_data);
     buffer.open(QIODevice::WriteOnly);
     pixmap.save(&buffer, "JPEG", 90);
@@ -49,4 +53,12 @@ void ArtworkView::set_artwork(QByteArray data) {
 
 QByteArray ArtworkView::get_artwork() {
     return m_artwork_data;
+}
+
+int ArtworkView::artwork_width() {
+    return m_artwork_width;
+}
+
+int ArtworkView::artwork_height() {
+    return m_artwork_height;
 }

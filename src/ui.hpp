@@ -40,4 +40,5 @@ private:
     QLineEdit m_edit_album;
     QLineEdit m_edit_year;
     ArtworkView m_artwork;
+    QLabel m_artwork_info;
 };

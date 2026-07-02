@@ -10,6 +10,10 @@ public:
     void dropEvent(QDropEvent *e) override;
     void set_artwork(QByteArray data);
     QByteArray get_artwork();
+    int artwork_width();
+    int artwork_height();
 private:
     QByteArray m_artwork_data;
+    int m_artwork_width;
+    int m_artwork_height;
 };

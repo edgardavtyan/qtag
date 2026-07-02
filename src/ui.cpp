@@ -3,6 +3,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QTextEdit>
+#include <sstream>
 #include "ui.hpp"
 
 UI::UI(int& argc, char**& argv): m_app(argc, argv) {
@@ -25,6 +26,7 @@ UI::UI(int& argc, char**& argv): m_app(argc, argv) {
     tag_box->addWidget(&m_edit_year);
     tag_box->addWidget(new QLabel("Artwork"));
     tag_box->addWidget(&m_artwork);
+    tag_box->addWidget(&m_artwork_info);
 
     QHBoxLayout *main_box = new QHBoxLayout(&m_root);
     main_box->addWidget(&m_file_list);
@@ -104,6 +106,9 @@ uint UI::get_year() {
 
 void UI::set_artwork(QByteArray data) {
     m_artwork.set_artwork(data);
+    std::stringstream ss;
+    ss << m_artwork.artwork_width() << "x" << m_artwork.artwork_height();
+    m_artwork_info.setText(QString::fromStdString(ss.str()));
 }
 
 QByteArray UI::get_artwork() {
