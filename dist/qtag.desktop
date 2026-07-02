@@ -1,0 +1,10 @@
+[Desktop Entry]
+Comment=Audio tag editor made with Qt6 and C++
+Exec=/usr/bin/qtag
+Icon=qtag
+Name=qtag
+NoDisplay=false
+StartupNotify=false
+Terminal=false
+Type=Application
+Categories=Utility;

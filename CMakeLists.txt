@@ -14,7 +14,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 qt_standard_project_setup()
 
 qt_add_executable(
-    qtag
+    ${PROJECT_NAME}
     main.qrc
     src/main.cpp
     src/ui.cpp
@@ -23,8 +23,8 @@ qt_add_executable(
     src/artwork_view.cpp
 )
 
-target_link_libraries(qtag PRIVATE Qt6::Core Qt6::Widgets tag)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Core Qt6::Widgets tag)
 
-#install(TARGETS qplay DESTINATION /usr/bin)
-#install(FILES dist/qplay.desktop DESTINATION /usr/share/applications)
-#install(FILES dist/qplay.svg DESTINATION /usr/share/icons)
+install(TARGETS ${PROJECT_NAME} DESTINATION /usr/bin)
+install(FILES dist/${PROJECT_NAME}.desktop DESTINATION /usr/share/applications)
+install(FILES dist/${PROJECT_NAME}.svg DESTINATION /usr/share/icons)
