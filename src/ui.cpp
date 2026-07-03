@@ -35,6 +35,12 @@ UI::UI(int& argc, char**& argv): m_app(argc, argv) {
     connect(&m_file_list, &FileList::selection_changed, [&](QStringList list) {
         emit selection_changed(list);
     });
+
+    connect(&m_artwork, &ArtworkView::on_drag_drop, [&]() {
+        std::stringstream ss;
+        ss << m_artwork.artwork_width() << "x" << m_artwork.artwork_height();
+        m_artwork_info.setText(QString::fromStdString(ss.str()));
+    });
 }
 
 void UI::exec() {
@@ -112,7 +118,7 @@ void UI::set_artwork(QByteArray data) {
 }
 
 QByteArray UI::get_artwork() {
-    return m_artwork.get_artwork();
+    return m_artwork.artwork();
 }
 
 QStringList UI::selected_files() {

@@ -37,6 +37,8 @@ void ArtworkView::dropEvent(QDropEvent *e) {
     buffer.open(QIODevice::WriteOnly);
     pixmap.save(&buffer, "JPEG", 90);
     buffer.close();
+
+    emit on_drag_drop();
 }
 
 void ArtworkView::set_artwork(QByteArray data) {
@@ -51,7 +53,7 @@ void ArtworkView::set_artwork(QByteArray data) {
     buffer.close();
 }
 
-QByteArray ArtworkView::get_artwork() {
+QByteArray ArtworkView::artwork() {
     return m_artwork_data;
 }
 
