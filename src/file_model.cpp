@@ -8,7 +8,7 @@ int FileModel::rowCount(const QModelIndex &parent) const {
 
 QVariant FileModel::data(const QModelIndex &index, int role) const {
     if (role == Qt::DisplayRole) {
-        return m_items[index.row()].section("/", -1, -1);
+        return m_items[index.row()].section("/", -2, -1);
     }
     return {};
 }
