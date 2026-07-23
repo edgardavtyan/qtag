@@ -21,20 +21,33 @@ int main(int argc, char** argv) {
     bool is_different_artists = false;
     bool is_different_albums = false;
     bool is_different_years = false;
+    bool is_different_tracks = false;
     bool is_different_artwork = false;
 
     QObject::connect(&ui, &UI::selection_changed, [&](QStringList list) {
+        if (list.isEmpty()) {
+            ui.set_title("");
+            ui.set_artist("");
+            ui.set_album("");
+            ui.set_year("");
+            ui.set_track("");
+            ui.clear_artwork();
+            return;
+        }
+
         TagLib::FileRef first_file(list[0].toStdString().c_str());
         TagLib::Tag *first_tag = first_file.tag();
         QString first_title = first_tag->title().toCString();
         QString first_artist = first_tag->artist().toCString();
         QString first_album = first_tag->album().toCString();
         uint first_year = first_tag->year();
+        uint first_track = first_tag->track();
         QByteArray first_artwork = read_artwork(list[0]);
         ui.set_title(first_title);
         ui.set_artist(first_artist);
         ui.set_album(first_album);
-        ui.set_year(first_year);
+        ui.set_year(QString::number(first_year));
+        ui.set_track(QString::number(first_track));
         ui.set_artwork(first_artwork);
 
         for (QString &str : list) {
@@ -55,6 +68,10 @@ int main(int argc, char** argv) {
             if (tag->year() != first_year) {
                 ui.set_different_years();
                 is_different_years = true;
+            }
+            if (tag->track() != first_track) {
+                ui.set_different_tracks();
+                is_different_tracks = true;
             }
 
             QByteArray artwork = read_artwork(str);
@@ -79,6 +96,9 @@ int main(int argc, char** argv) {
             }
             if (not is_different_years or not ui.get_year().isEmpty()) {
                 tagfile.tag()->setYear(ui.get_year().toUInt());
+            }
+            if (not is_different_tracks or not ui.get_track().isEmpty()) {
+                tagfile.tag()->setTrack(ui.get_track().toUInt());
             }
             tagfile.save();
 

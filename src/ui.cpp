@@ -22,8 +22,17 @@ UI::UI(int& argc, char**& argv): m_app(argc, argv) {
     tag_box->addWidget(&m_edit_artist);
     tag_box->addWidget(new QLabel("Album:"));
     tag_box->addWidget(&m_edit_album);
-    tag_box->addWidget(new QLabel("Date:"));
-    tag_box->addWidget(&m_edit_year);
+
+    QHBoxLayout *year_track_box = new QHBoxLayout();
+    year_track_box->addWidget(new QLabel("Date:"));
+    year_track_box->addWidget(&m_edit_year);
+    year_track_box->addSpacing(20);
+    year_track_box->addWidget(new QLabel("Track:"));
+    year_track_box->addWidget(&m_edit_track);
+    tag_box->addSpacing(10);
+    tag_box->addLayout(year_track_box);
+
+    tag_box->addSpacing(10);
     tag_box->addWidget(new QLabel("Artwork"));
     tag_box->addWidget(&m_artwork);
     tag_box->addWidget(&m_artwork_info);
@@ -64,9 +73,14 @@ void UI::set_album(QString album) {
     m_edit_album.setText(album);
 }
 
-void UI::set_year(uint date) {
+void UI::set_year(QString date) {
     m_edit_year.setPlaceholderText("");
-    m_edit_year.setText(QString::number(date));
+    m_edit_year.setText(date);
+}
+
+void UI::set_track(QString track) {
+    m_edit_track.setPlaceholderText("");
+    m_edit_track.setText(track);
 }
 
 void UI::set_different_titles() {
@@ -87,6 +101,11 @@ void UI::set_different_albums() {
 void UI::set_different_years() {
     m_edit_year.setPlaceholderText("Different values");
     m_edit_year.setText("");
+}
+
+void UI::set_different_tracks() {
+    m_edit_track.setPlaceholderText("Different values");
+    m_edit_track.setText("");
 }
 
 void UI::set_different_artwork() {
@@ -110,11 +129,20 @@ QString UI::get_year() {
     return m_edit_year.text();
 }
 
+QString UI::get_track() {
+    return m_edit_track.text();
+}
+
 void UI::set_artwork(QByteArray data) {
     m_artwork.set_artwork(data);
     std::stringstream ss;
     ss << m_artwork.artwork_width() << "x" << m_artwork.artwork_height();
     m_artwork_info.setText(QString::fromStdString(ss.str()));
+}
+
+void UI::clear_artwork() {
+    m_artwork.clear();
+    m_artwork_info.clear();
 }
 
 QByteArray UI::get_artwork() {

@@ -15,17 +15,21 @@ public:
     void set_title(QString title);
     void set_artist(QString artist);
     void set_album(QString album);
-    void set_year(uint year);
+    void set_year(QString year);
+    void set_track(QString track);
     void set_different_titles();
     void set_different_artists();
     void set_different_albums();
     void set_different_years();
+    void set_different_tracks();
     void set_different_artwork();
     QString get_title();
     QString get_artist();
     QString get_album();
     QString get_year();
+    QString get_track();
     void set_artwork(QByteArray data);
+    void clear_artwork();
     QByteArray get_artwork();
     QStringList selected_files();
 signals:
@@ -39,6 +43,7 @@ private:
     QLineEdit m_edit_artist;
     QLineEdit m_edit_album;
     QLineEdit m_edit_year;
+    QLineEdit m_edit_track;
     ArtworkView m_artwork;
     QLabel m_artwork_info;
 };
