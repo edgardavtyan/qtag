@@ -23,6 +23,8 @@ UI::UI(int& argc, char**& argv): m_app(argc, argv) {
     tag_box->addWidget(&m_edit_artist);
     tag_box->addWidget(new QLabel("Album:"));
     tag_box->addWidget(&m_edit_album);
+    tag_box->addWidget(new QLabel("Genre:"));
+    tag_box->addWidget(&m_edit_genre);
 
     QHBoxLayout *year_track_box = new QHBoxLayout();
 
@@ -89,6 +91,11 @@ void UI::set_track(QString track) {
     m_edit_track.setText(track);
 }
 
+void UI::set_genre(QString genre) {
+    m_edit_genre.setPlaceholderText("");
+    m_edit_genre.setText(genre);
+}
+
 void UI::set_different_titles() {
     m_edit_title.setPlaceholderText("Different values");
     m_edit_title.setText("");
@@ -114,6 +121,11 @@ void UI::set_different_tracks() {
     m_edit_track.setText("");
 }
 
+void UI::set_different_genres() {
+    m_edit_genre.setPlaceholderText("Different values");
+    m_edit_genre.setText("");
+}
+
 void UI::set_different_artwork() {
     m_artwork.clear();
     m_artwork.setText("Artwork varies");
@@ -137,6 +149,10 @@ QString UI::get_year() {
 
 QString UI::get_track() {
     return m_edit_track.text();
+}
+
+QString UI::get_genre() {
+    return m_edit_genre.text();
 }
 
 void UI::set_artwork(QByteArray data) {

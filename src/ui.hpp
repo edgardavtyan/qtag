@@ -17,17 +17,20 @@ public:
     void set_album(QString album);
     void set_year(QString year);
     void set_track(QString track);
+    void set_genre(QString track);
     void set_different_titles();
     void set_different_artists();
     void set_different_albums();
     void set_different_years();
     void set_different_tracks();
+    void set_different_genres();
     void set_different_artwork();
     QString get_title();
     QString get_artist();
     QString get_album();
     QString get_year();
     QString get_track();
+    QString get_genre();
     void set_artwork(QByteArray data);
     void clear_artwork();
     QByteArray get_artwork();
@@ -44,6 +47,7 @@ private:
     QLineEdit m_edit_album;
     QLineEdit m_edit_year;
     QLineEdit m_edit_track;
+    QLineEdit m_edit_genre;
     ArtworkView m_artwork;
     QLabel m_artwork_info;
 };

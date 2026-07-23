@@ -22,6 +22,7 @@ int main(int argc, char** argv) {
     bool is_different_albums = false;
     bool is_different_years = false;
     bool is_different_tracks = false;
+    bool is_different_genres = false;
     bool is_different_artwork = false;
 
     QObject::connect(&ui, &UI::selection_changed, [&](QStringList list) {
@@ -31,6 +32,7 @@ int main(int argc, char** argv) {
             ui.set_album("");
             ui.set_year("");
             ui.set_track("");
+            ui.set_genre("");
             ui.clear_artwork();
             return;
         }
@@ -40,12 +42,14 @@ int main(int argc, char** argv) {
         QString first_title = first_tag->title().toCString();
         QString first_artist = first_tag->artist().toCString();
         QString first_album = first_tag->album().toCString();
+        QString first_genre = first_tag->genre().toCString();
         uint first_year = first_tag->year();
         uint first_track = first_tag->track();
         QByteArray first_artwork = read_artwork(list[0]);
         ui.set_title(first_title);
         ui.set_artist(first_artist);
         ui.set_album(first_album);
+        ui.set_genre(first_genre);
         ui.set_year(QString::number(first_year));
         ui.set_track(QString::number(first_track));
         ui.set_artwork(first_artwork);
@@ -64,6 +68,10 @@ int main(int argc, char** argv) {
             if (QString(tag->album().toCString()) != first_album) {
                 ui.set_different_albums();
                 is_different_albums = true;
+            }
+            if (QString(tag->genre().toCString()) != first_genre) {
+                ui.set_different_genres();
+                is_different_genres = true;
             }
             if (tag->year() != first_year) {
                 ui.set_different_years();
@@ -93,6 +101,9 @@ int main(int argc, char** argv) {
             }
             if (not is_different_albums or not ui.get_album().isEmpty()) {
                 tagfile.tag()->setAlbum(ui.get_album().toStdString().c_str());
+            }
+            if (not is_different_genres or not ui.get_genre().isEmpty()) {
+                tagfile.tag()->setGenre(ui.get_genre().toStdString().c_str());
             }
             if (not is_different_years or not ui.get_year().isEmpty()) {
                 tagfile.tag()->setYear(ui.get_year().toUInt());
