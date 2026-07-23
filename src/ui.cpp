@@ -16,6 +16,7 @@ UI::UI(int& argc, char**& argv): m_app(argc, argv) {
     QVBoxLayout *tag_box = new QVBoxLayout();
     tag_box->setAlignment(Qt::AlignTop);
     tag_box->addLayout(toolbar_box);
+
     tag_box->addWidget(new QLabel("Title:"));
     tag_box->addWidget(&m_edit_title);
     tag_box->addWidget(new QLabel("Artist:"));
@@ -24,12 +25,17 @@ UI::UI(int& argc, char**& argv): m_app(argc, argv) {
     tag_box->addWidget(&m_edit_album);
 
     QHBoxLayout *year_track_box = new QHBoxLayout();
-    year_track_box->addWidget(new QLabel("Date:"));
-    year_track_box->addWidget(&m_edit_year);
-    year_track_box->addSpacing(20);
-    year_track_box->addWidget(new QLabel("Track:"));
-    year_track_box->addWidget(&m_edit_track);
-    tag_box->addSpacing(10);
+
+    QVBoxLayout *year_box = new QVBoxLayout();
+    year_box->addWidget(new QLabel("Date:"));
+    year_box->addWidget(&m_edit_year);
+    year_track_box->addLayout(year_box);
+
+    QVBoxLayout *track_box = new QVBoxLayout();
+    track_box->addWidget(new QLabel("Track:"));
+    track_box->addWidget(&m_edit_track);
+    year_track_box->addLayout(track_box);
+
     tag_box->addLayout(year_track_box);
 
     tag_box->addSpacing(10);
