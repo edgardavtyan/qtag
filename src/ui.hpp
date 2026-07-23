@@ -34,9 +34,9 @@ public:
     void set_artwork(QByteArray data);
     void clear_artwork();
     QByteArray get_artwork();
-    QStringList selected_files();
+    std::vector<FileListItem> selected_files();
 signals:
-    void selection_changed(QStringList list);
+    void selection_changed(std::vector<FileListItem> list);
     void btn_save_clicked();
 private:
     QApplication m_app;

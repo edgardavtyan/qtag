@@ -1,17 +1,19 @@
-#include "file_list.hpp"
+#include <algorithm>
 #include <QDragEnterEvent>
 #include <QMimeData>
 #include <QDir>
 #include <QDirIterator>
+#include "file_list.hpp"
+#include "file_list_item.hpp"
 
 FileList::FileList() {
     setAcceptDrops(true);
     setModel(&m_model);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     QObject::connect(selectionModel(), &QItemSelectionModel::selectionChanged, [&]() {
-        QStringList list;
+        std::vector<FileListItem> list;
         for (QModelIndex &idx : selectedIndexes()) {
-            list.append(m_model.at(idx.row()));
+            list.push_back(m_model.at(idx.row()));
         }
         emit selection_changed(list);
     });
@@ -30,30 +32,40 @@ void FileList::dragMoveEvent(QDragMoveEvent *e) {
 }
 
 void FileList::dropEvent(QDropEvent *e) {
-    QList<QString> files;
+    QStringList files;
     for (QUrl &url : e->mimeData()->urls()) {
-        QString filename = url.toLocalFile();
-        QFileInfo file(filename);
+        QFileInfo file(url.toLocalFile());
         if (file.isDir() and file.exists()) {
-            QDirIterator dirit(QDir(filename).path(), QStringList() << "*.mp3", QDir::Files,
+            QDirIterator dirit(QDir(url.toLocalFile()).path(), QStringList() << "*.mp3", QDir::Files,
                                QDirIterator::Subdirectories);
             while (dirit.hasNext()) {
                 files.append(dirit.next());
             }
         }
-
         if (file.isFile() and file.exists() and file.suffix() == "mp3") {
-            files.append(filename);
+            files.append(file.path());
         }
     }
     files.sort();
-    m_model.set_items(files);
+
+    std::vector<FileListItem> listitems;
+    QString dirname;
+    for (QString &file : files) {
+        QString dir = file.section("/", -2, -2);
+        if (dirname != dir) {
+            dirname = dir;
+            listitems.push_back(FileListItem(true, dirname));
+        }
+        listitems.push_back(FileListItem(false, file));
+    }
+
+    m_model.set_items(listitems);
 }
 
-QStringList FileList::selected_items() {
-    QStringList list;
+std::vector<FileListItem> FileList::selected_items() {
+    std::vector<FileListItem> list;
     for (QModelIndex &idx : selectedIndexes()) {
-        list.append(m_model.at(idx.row()));
+        list.push_back(m_model.at(idx.row()));
     }
     return list;
 }

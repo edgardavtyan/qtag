@@ -20,6 +20,7 @@ qt_add_executable(
     src/ui.cpp
     src/file_model.cpp
     src/file_list.cpp
+    src/file_list_item.cpp
     src/artwork_view.cpp
 )
 

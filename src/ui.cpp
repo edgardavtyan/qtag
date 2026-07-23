@@ -51,7 +51,7 @@ UI::UI(int& argc, char**& argv): m_app(argc, argv) {
     main_box->addWidget(&m_file_list);
     main_box->addLayout(tag_box);
 
-    connect(&m_file_list, &FileList::selection_changed, [&](QStringList list) {
+    connect(&m_file_list, &FileList::selection_changed, [&](std::vector<FileListItem> list) {
         emit selection_changed(list);
     });
 
@@ -173,6 +173,6 @@ QByteArray UI::get_artwork() {
     return m_artwork.artwork();
 }
 
-QStringList UI::selected_files() {
+std::vector<FileListItem> UI::selected_files() {
     return m_file_list.selected_items();
 }

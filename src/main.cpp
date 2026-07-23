@@ -25,8 +25,8 @@ int main(int argc, char** argv) {
     bool is_different_genres = false;
     bool is_different_artwork = false;
 
-    QObject::connect(&ui, &UI::selection_changed, [&](QStringList list) {
-        if (list.isEmpty()) {
+    QObject::connect(&ui, &UI::selection_changed, [&](std::vector<FileListItem> list) {
+        if (list.empty()) {
             ui.set_title("");
             ui.set_artist("");
             ui.set_album("");
@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
             return;
         }
 
-        TagLib::FileRef first_file(list[0].toStdString().c_str());
+        TagLib::FileRef first_file(list[0].text.toStdString().c_str());
         TagLib::Tag *first_tag = first_file.tag();
         QString first_title = first_tag->title().toCString();
         QString first_artist = first_tag->artist().toCString();
@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
         QString first_genre = first_tag->genre().toCString();
         uint first_year = first_tag->year();
         uint first_track = first_tag->track();
-        QByteArray first_artwork = read_artwork(list[0]);
+        QByteArray first_artwork = read_artwork(list[0].text);
         ui.set_title(first_title);
         ui.set_artist(first_artist);
         ui.set_album(first_album);
@@ -54,8 +54,8 @@ int main(int argc, char** argv) {
         ui.set_track(QString::number(first_track));
         ui.set_artwork(first_artwork);
 
-        for (QString &str : list) {
-            TagLib::FileRef file(str.toStdString().c_str());
+        for (FileListItem &listitem : list) {
+            TagLib::FileRef file(listitem.text.toStdString().c_str());
             TagLib::Tag *tag = file.tag();
             if (QString(tag->title().toCString()) != first_title) {
                 ui.set_different_titles();
@@ -82,7 +82,7 @@ int main(int argc, char** argv) {
                 is_different_tracks = true;
             }
 
-            QByteArray artwork = read_artwork(str);
+            QByteArray artwork = read_artwork(listitem.text);
             if (artwork != first_artwork) {
                 ui.set_different_artwork();
                 is_different_artwork = true;
@@ -91,8 +91,8 @@ int main(int argc, char** argv) {
     });
 
     QObject::connect(&ui, &UI::btn_save_clicked, [&]() {
-        for (QString &filename : ui.selected_files()) {
-            TagLib::FileRef tagfile(filename.toStdString().c_str());
+        for (FileListItem &listitem : ui.selected_files()) {
+            TagLib::FileRef tagfile(listitem.text.toStdString().c_str());
             if (not is_different_titles or not ui.get_title().isEmpty()) {
                 tagfile.tag()->setTitle(ui.get_title().toStdString().c_str());
             }
@@ -114,7 +114,7 @@ int main(int argc, char** argv) {
             tagfile.save();
 
             if (not is_different_artwork) {
-                TagLib::MPEG::File mp3file(filename.toStdString().c_str());
+                TagLib::MPEG::File mp3file(listitem.text.toStdString().c_str());
                 TagLib::ID3v2::Tag *mp3tag = mp3file.ID3v2Tag();
                 mp3tag->removeFrame(mp3tag->frameList("APIC")[0], true);
                 auto *artwork = new TagLib::ID3v2::AttachedPictureFrame();

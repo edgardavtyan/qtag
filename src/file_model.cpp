@@ -1,6 +1,5 @@
 #include "file_model.hpp"
 
-
 int FileModel::rowCount(const QModelIndex &parent) const {
     Q_UNUSED(parent);
     return m_items.size();
@@ -8,16 +7,32 @@ int FileModel::rowCount(const QModelIndex &parent) const {
 
 QVariant FileModel::data(const QModelIndex &index, int role) const {
     if (role == Qt::DisplayRole) {
-        return m_items[index.row()].section("/", -2, -1);
+        FileListItem item = m_items[index.row()];
+        if (item.is_dir) {
+            return item.text;
+        }
+        else {
+            return "    " + item.text.section("/", -1, -1);
+        }
     }
     return {};
 }
 
-void FileModel::set_items(QStringList items) {
+Qt::ItemFlags FileModel::flags(const QModelIndex &index) const {
+    FileListItem item = m_items[index.row()];
+    if (item.is_dir) {
+        return Qt::NoItemFlags;
+    }
+    else {
+        return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    }
+}
+
+void FileModel::set_items(std::vector<FileListItem> items) {
     m_items = items;
     dataChanged(createIndex(0, 0), createIndex(0, 0));
 }
 
-QString FileModel::at(int row) {
+FileListItem FileModel::at(int row) {
     return m_items[row];
 }

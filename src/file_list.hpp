@@ -10,9 +10,9 @@ public:
     void dragEnterEvent(QDragEnterEvent *e) override;
     void dragMoveEvent(QDragMoveEvent *e) override;
     void dropEvent(QDropEvent *e) override;
-    QStringList selected_items();
+    std::vector<FileListItem> selected_items();
 signals:
-    void selection_changed(QStringList list);
+    void selection_changed(std::vector<FileListItem> list);
 private:
     FileModel m_model;
 };
