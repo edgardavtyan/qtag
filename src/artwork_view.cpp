@@ -25,7 +25,7 @@ void ArtworkView::dragMoveEvent(QDragMoveEvent *e) {
 
 void ArtworkView::dropEvent(QDropEvent *e) {
     QString file = e->mimeData()->urls()[0].toLocalFile();
-    if (not file.endsWith(".jpg")) {
+    if (not (file.endsWith(".jpg") or file.endsWith(".png"))) {
         return;
     }
 
