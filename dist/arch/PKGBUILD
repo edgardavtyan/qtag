@@ -1,0 +1,21 @@
+pkgname="qtag"
+pkgver="1.0.0"
+pkgrel=1
+pkgdescr=""
+url="https://github.com/edgardavtyan/qtag"
+arch=("x86_64")
+depends=("cmake" "taglib")
+license=("GPLv3")
+sha256sums=("SKIP")
+source=(${pkgname}-${pkgver}.tar.gz::"${url}/archive/${pkgver}.tar.gz")
+build() {
+    cd qtag-${pkgver}
+    mkdir build
+    cd build
+    cmake ..
+    make
+}
+package() {
+    cd qtag-${pkgver}/build
+    sudo make install
+}
