@@ -15,7 +15,6 @@ qt_standard_project_setup()
 
 qt_add_executable(
     ${PROJECT_NAME}
-    main.qrc
     src/main.cpp
     src/ui.cpp
     src/file_model.cpp
