@@ -42,7 +42,7 @@ void FileList::dropEvent(QDropEvent *e) {
             }
         }
 
-        if (file.isFile() and file.exists() and file.completeSuffix() == "mp3") {
+        if (file.isFile() and file.exists() and file.suffix() == "mp3") {
             files.append(filename);
         }
     }
