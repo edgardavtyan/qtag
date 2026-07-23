@@ -7,6 +7,8 @@
 #include "ui.hpp"
 
 UI::UI(int& argc, char**& argv): m_app(argc, argv) {
+    m_file_list.setStyleSheet("QListView::item { padding: 2px; }");
+
     QHBoxLayout *toolbar_box = new QHBoxLayout();
     toolbar_box->setAlignment(Qt::AlignLeft);
     QPushButton *btn_save = new QPushButton("Save");
