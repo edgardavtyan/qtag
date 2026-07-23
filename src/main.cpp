@@ -68,17 +68,17 @@ int main(int argc, char** argv) {
     QObject::connect(&ui, &UI::btn_save_clicked, [&]() {
         for (QString &filename : ui.selected_files()) {
             TagLib::FileRef tagfile(filename.toStdString().c_str());
-            if (not is_different_titles) {
+            if (not is_different_titles or not ui.get_title().isEmpty()) {
                 tagfile.tag()->setTitle(ui.get_title().toStdString().c_str());
             }
-            if (not is_different_artists) {
+            if (not is_different_artists or not ui.get_artist().isEmpty()) {
                 tagfile.tag()->setArtist(ui.get_artist().toStdString().c_str());
             }
-            if (not is_different_albums) {
+            if (not is_different_albums or not ui.get_album().isEmpty()) {
                 tagfile.tag()->setAlbum(ui.get_album().toStdString().c_str());
             }
-            if (not is_different_years) {
-                tagfile.tag()->setYear(ui.get_year());
+            if (not is_different_years or not ui.get_year().isEmpty()) {
+                tagfile.tag()->setYear(ui.get_year().toUInt());
             }
             tagfile.save();
 

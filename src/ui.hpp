@@ -24,7 +24,7 @@ public:
     QString get_title();
     QString get_artist();
     QString get_album();
-    uint get_year();
+    QString get_year();
     void set_artwork(QByteArray data);
     QByteArray get_artwork();
     QStringList selected_files();

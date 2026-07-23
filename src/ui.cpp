@@ -106,8 +106,8 @@ QString UI::get_album() {
     return m_edit_album.text();
 }
 
-uint UI::get_year() {
-    return m_edit_year.text().toUInt();
+QString UI::get_year() {
+    return m_edit_year.text();
 }
 
 void UI::set_artwork(QByteArray data) {
