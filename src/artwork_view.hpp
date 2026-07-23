@@ -19,4 +19,5 @@ private:
     QByteArray m_artwork_data;
     int m_artwork_width;
     int m_artwork_height;
+    void set_artwork_from_pixmap(const QPixmap &pixmap);
 };
