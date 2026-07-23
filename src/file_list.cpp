@@ -46,6 +46,7 @@ void FileList::dropEvent(QDropEvent *e) {
             files.append(filename);
         }
     }
+    files.sort();
     m_model.set_items(files);
 }
 
