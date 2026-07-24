@@ -1,7 +1,7 @@
 pkgname="qtag"
 pkgver="1.0.0"
 pkgrel=1
-pkgdescr=""
+pkgdescr="Tag editor for music files written in Qt6 and C++"
 url="https://github.com/edgardavtyan/qtag"
 arch=("x86_64")
 depends=("taglib")
